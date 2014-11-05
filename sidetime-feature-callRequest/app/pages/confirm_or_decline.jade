@@ -1,0 +1,46 @@
+.container(data-ng-controller="BrowseExperts")
+  header.userProfile    
+    include ../shared/signedin_header 
+    .alert.alert-success(role="alert" data-ng-if="success")
+      strong {{success}}
+    .alert.alert-danger(role="alert" data-ng-show="error")
+      strong {{error}}
+    .alert.alert-danger(role="alert" data-ng-show="unauthorized")
+      strong {{unauthorized}}
+  .div(data-ng-init="getCallRequest()")
+    .row(data-ng-hide="unauthorized")
+      .col-md-6
+        .panel.panel-primary
+          .panel-heading
+            h3.panel-title Confirm or Decline
+          table.table.table-hover(id="dev-table")
+              tr
+                td Name of Requester
+                td {{callRequest.requesterName}}
+              tr
+                td Message
+                td {{callRequest.message}}
+              tr
+                td Estimate Length of Call
+                td {{callRequest.estimateLength}}
+              tr
+                td Sugested time and date
+                td {{callRequest.suggested_time}} on {{callRequest.suggested_date}}
+    
+    fieldset(data-ng-hide="success")
+      legend Choose a reason from the dropdown or enter your own reason if you want to decline call request
+      .col-md-6.form-group
+        button.btn.btn-large.btn-primary(type="button" data-ng-click="toggleReason('showSelect')") Select from a list of reasons
+      .col-md-6.form-group
+        button.btn.btn-large.btn-primary(type="button" data-ng-click="toggleReason('showInput')") Add your own reason
+      select.form-control(id="decline" name="decline" data-ng-show="showSelect" data-ng-model="declineReason")
+        option(value="I'm busy") I'm busy
+        option(value="Not interested") Not interested
+      input.input-profile.form-control(type="text" id="declineInput" name="declineInput" data-ng-show="showInput" data-ng-model="ownReason" placeholder="enter your reason for declining" required)
+      p.text-danger(data-ng-show="!ownReason && showInput") Enter a reason
+ 
+      .col-md-6
+        button.btn.btn-large.btn-success(type="button" data-ng-click="acceptOrDecline('accepted')") Accept
+        button.btn.btn-large.btn-danger(type="button" data-ng-click="acceptOrDecline('declined')" data-ng-show="showInput || showSelect" data-ng-disabled="!ownReason && showInput") Decline
+  material-content.footer
+    include ../shared/footer

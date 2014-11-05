@@ -1,0 +1,25 @@
+.navbar.navbar-default(role="navigation")
+  .container-fluid
+    .navbar-header
+      button.navbar-toggle.collapsed(type="button" data-toggle="collapse" data-target="navbar-collapse")
+        span.sr-only Toggle navigation
+        span.icon-bar
+        span.icon-bar
+        span.icon-bar
+      a.navbar-brand(href="/") Sidetime 
+    .navbar-collapse.collapse
+      ul.nav.navbar-nav
+        li.dropdown(ng-show="currentUser")
+          a.dropdown-toggle(href="#")
+            img.google_avatar(ng-src="{{currentUser.picture}}")
+          ul.dropdown-menu(role="menu")
+            li.dropdown-header(role="presentation") Signed in as {{ currentUser.email }}
+            li
+              a(ng-click="logout()") logout
+      ul.nav.navbar-nav.navbar-right
+        li.active
+          a(href="/home") Home
+        li
+          a(href="/settings") Settings
+        li
+          a(href="/browse_experts") Browse

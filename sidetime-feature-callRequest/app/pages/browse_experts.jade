@@ -1,0 +1,40 @@
+.container(data-ng-controller="BrowseExperts" data-ng-init="getCategories()")
+  header.userProfile
+    include ../shared/signedin_header
+  .jumbotron
+    div
+      ul
+        li(data-ng-repeat="category in browseCategories") 
+          a(href="#" data-ng-click="changeValue('category', category.name)")
+            {{category.name}}
+          ul
+            li(data-ng-repeat="(key, value) in category.tags") 
+              a(href="#" data-ng-click="changeValue('tags', value)") {{value}}
+  .row
+    .col-md-6
+      h2 Showing: {{filterVal.value || 'All'}}
+      a(href="#" data-ng-click="changeValue('popular', 'popular', true)") Popular
+      a(href="#" data-ng-click="changeValue('new', 'new experts')") New Experts
+  .row(data-ng-repeat="(key, value) in users | property: filterVal: reverse" data-ng-if="value.expert_profile")
+      .span4.well
+        .row
+          div.span1(style="width: 20%; float: left; margin-right: 5%;")
+            a.thumbnail(href="/{{value.username}}/{{value.uid}}")
+              img.img-circle(data-ng-src="{{value.picture}}" style="width:150px;")
+          div.span3(style="width: 40%; float: left; margin-left: 9%;")
+            p
+             strong(style="text-transform: uppercase;") {{value.expert_profile.headline}} 
+            h5
+              strong(style="text-transform: capitalize; color: #9c9c9c") {{value.name}}
+            p
+              {{value.expert_profile.brief_bio}}
+          div.span3(style="width: 20%; float: left;")
+            p(style="text-align: center; font-size: 16px;")
+             strong(style="text-transform: uppercase;") ${{value.expert_profile.rate}}
+            span(style="text-align: center; display: block;") per minute
+            a.center-block.btn.btn-success.btn-lg(href="/{{value.username}}/{{value.uid}}/precall") Request a Call
+            p(style="text-align: center;")
+              strong Rating: {{value.expert_profile.rating}}
+
+  material-content.footer
+    include ../shared/footer

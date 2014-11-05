@@ -1,0 +1,19 @@
+.container(data-ng-controller="BrowseExperts")
+  header.userProfile
+    include ../shared/signedin_header
+    table.list.list-link(data-ng-init="listCalls()")
+      thead
+        tr
+          th Requester's Name
+          th Estimate Length
+          th Time of Call
+          th Date of Call
+      tbody
+        tr(data-ng-repeat="call in callsArr")
+          td {{call.requesterName}}
+          td {{call.estimateLength}}
+          td {{call.suggested_time}}
+          td {{call.suggested_date}}
+
+  material-content.footer
+    include ../shared/footer

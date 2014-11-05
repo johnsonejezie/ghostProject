@@ -1,0 +1,101 @@
+.container
+  header.userProfile    
+    include ../shared/signedin_header 
+  .container
+    .row
+      .col-md-offset-2.col-md-8.col-lg-offset-3.col-lg-6
+        .well.profile
+          .col-sm-12
+            .col-xs-12.col-sm-8
+              h2(style="text-transform: capitalize;") {{currentUser.name}} 
+              p 
+                strong Email:
+                span.subtext  {{currentUser.email}}
+              p 
+                strong Headline: 
+                span.subtext {{currentUser.expert_profile.headline}} 
+              p 
+                strong Rate: 
+                span.subtext ${{currentUser.expert_profile.rate}} per minute
+              p.text-left
+                strong Bio: 
+                br 
+                span {{currentUser.expert_profile.brief_bio}} 
+              p 
+                strong Skills: 
+                span.tags html5
+                span.tags css3
+                span.tags jquery
+                span.tags bootstrap3         
+            .col-xs-12.col-sm-4.text-center
+              figure
+                  img.img-circle.img-responsive(ng-src="{{currentUser.picture}}")        
+          .col-xs-12.divider.text-center
+            .col-xs-12.col-sm-4.emphasis
+              h2 
+                strong 20,7K                    
+              p 
+                small Followers
+              button.btn.btn-success.btn-block
+                span.fa.fa-plus-circle Follow 
+            .col-xs-12.col-sm-4.emphasis
+              h2 
+                strong 245                   
+              p 
+                small Following 
+              button.btn.btn-info.btn-block
+                span.fa.fa-user  View Profile
+            .col-xs-12.col-sm-4.emphasis
+              h2 
+                strong 43                   
+              p 
+                small Snippets 
+              .btn-group.dropup.btn-block
+                button.btn.btn-primary(type="button")
+                  span.fa.fa-gear Options 
+                button.btn.btn-primary.dropdown-toggle(type="button" data-toggle="dropdown")
+                  span.caret
+                  span.sr-only Toggle Dropdown
+                ul.dropdown-menu.text-left(role="menu")
+                  li
+                    a(href="#") 
+                      span.fa.fa-envelope.pull-right 
+                      Send an email
+                  li
+                    a(href="#")
+                      span.fa.fa-list.pull-right
+                      Add or remove from a list  
+                  li.divider
+                  li
+                    a(href="#")
+                      span.fa.fa-warning.pull-right Report this user for spam
+                  li.divider
+                  li
+                    a.btn.disabled(href="#" role="button") Unfollow 
+          .modal-header
+            .modal-body(style="text-align:center;")
+            .row-fluid
+                .span10.offset1
+                    div(id="modalTab")
+                      .tab-content
+                        .tab-pane.active(id="about")
+                          img.img-central.img-circle(src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRbezqZpEuwGSvitKy3wrwnth5kysKdRqBW54cAszm_wiutku3R" name="aboutme" width="140" height="140" border="0")
+                          h3.media-heading#profile-name {{currentUser.name}} 
+                            small email: {{currentUser.email}} 
+                          span 
+                            strong Skills: 
+                          span.label.label-warning HTML5/CSS
+                          span.label.label-info Adobe CS 5.5
+                          span.label.label-info Microsoft Office
+                          span.label.label-success Windows XP, Vista, 7
+                          hr
+                          center
+                            p.text-left
+                              strong Headline: 
+                              br 
+                              span {{currentUser.expert_profile.headline}}
+                            p.text-left
+                              strong Bio: 
+                              br 
+                              span {{currentUser.expert_profile.brief_bio}} 
+                                      

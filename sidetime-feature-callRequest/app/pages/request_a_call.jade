@@ -1,0 +1,67 @@
+.container(data-ng-controller="BrowseExperts")
+  header.userProfile
+    include ../shared/signedin_header
+  .row.col-md-6(data-ng-init="getExpert()")
+    
+    form(name="callForm" data-ng-submit="requestCall()" autocomplete="off")
+      .alert.alert-success(role="alert" data-ng-show="success")
+        strong You have successfully made a call request
+      .alert.alert-danger(role="alert" data-ng-show="error")
+        strong {{error}}
+      .alert.alert-danger(role="alert" data-ng-show="badRequest")
+        strong You cannot make a call request to your own self
+
+      fieldset
+        legend Provide Call Information
+        .form-group(data-ng-class="{'has-error': callForm.message.$invalid && !callForm.message.$pristine }")
+          label.label-profile(for="message") Message to {{expert.name}}
+          textarea.input-profile.form-control(id="message" name="message" data-ng-model="request.message" cols="30" rows="10" placeholder="Enter your message" required)
+          p.help-block(data-ng-show="callForm.message.$error.required && !callForm.message.$pristine") Enter your message
+
+        .form-group(data-ng-class="{'has-error': callForm.estimateLength.$invalid && !callForm.estimateLength.$pristine }")
+          label.label-profile(for="estimateLength") Estimated Length
+          select.form-control(id="estimateLength" name="estimateLength" data-ng-model="request.estimateLength") {{request.estimateLength}}
+            option(value="{{expert.expert_profile.minutes + 'minutes~$' + expert.expert_profile.rate}}") {{expert.expert_profile.minutes}}minutes~(${{expert.expert_profile.rate}})
+            option(value="{{expert.expert_profile.minutes*2 + 'minutes~$' + expert.expert_profile.rate * 2}}") {{expert.expert_profile.minutes * 2}}minutes~(${{expert.expert_profile.rate * 2}})
+            option(value="{{expert.expert_profile.minutes*4 + 'minutes~$' + expert.expert_profile.rate * 4}}") {{expert.expert_profile.minutes * 4}}minutes~(${{expert.expert_profile.rate * 4}})
+
+        .form-group(data-ng-class="{'has-error': callForm.email.$invalid && !callForm.email.$pristine }")
+          label.label-profile(for="email") Email
+          input.input-profile.form-control(type="email" id="email" name="email" data-ng-pattern="email_regexp" data-ng-model="currentUser.email" placeholder="Email" required)
+          p.help-block(data-ng-show="callForm.email.$invalid && !callForm.email.$pristine") Enter a valid email
+      
+      fieldset
+        legend Suggest a time that you are free to talk 
+        .row
+          .col-md-6.form-group(data-ng-class="{'has-error': callForm.time.$invalid && !callForm.time.$pristine }")
+            label.label-profile(for="time") Time
+            select.form-control(id="time" name="time" data-ng-options="t as t for t in time" data-ng-model="request.suggested_time")
+              option(value="t") {{t}}
+
+          .col-md-6.form-group(data-ng-class="{'has-error': callForm.date.$invalid && !callForm.date.$pristine }")
+            label.label-profile(for="date") Date 
+            mac-datepicker.input-profile.form-control(id="date" type="text" name="date" data-ng-model="request.suggested_date" placeholder="Enter date you would like to talk")
+      
+      fieldset
+        legend Payment Details 
+        .form-group(data-ng-class="{'has-error': callForm.cardNum.$invalid && !callForm.cardNum.$pristine }")
+          label.label-profile(for="cardNum") Credit Card Number
+          input.input-profile.form-control(id="cardNum" type="number" name="cardNum" data-ng-model="cardNumber" placeholder="Credit Card number" required)
+          p.help-block(data-ng-show="callForm.cardNum.$error.minlength && !callForm.cardNum.$pristine") Card should have at least 16 numbers
+          p.help-block(data-ng-show="callForm.cardNum.$error.required && !callForm.cardNum.$pristine") Card details are required
+
+        .row  
+          .col-md-4.form-group(data-ng-class="{'has-error': callForm.expireMonth.$invalid && !callForm.expireMonth.$pristine }")
+            label.label-profile(for="expireMonth") Expiration Month
+            select.form-control(id="expireMonth" data-ng-options="month as month for month in months" name="expireMonth" data-ng-model="expiryMonth" required)
+             option(value="month") {{month}}
+
+          .col-md-4.form-group(data-ng-class="{'has-error': callForm.expireYear.$invalid && !callForm.expireYear.$pristine }")
+            label.label-profile(for="expireYear") Year
+            select.form-control(id="expireYear" data-ng-options="year as year for year in years" name="expireYear" data-ng-model="expiryYear" required)
+             option(value="year") {{year}}
+            p.help-block(data-ng-show="callForm.expireYear.$invalid && !callForm.expireYear.$pristine") Enter your message
+
+      button.btn.btn-large.btn-primary.center-block(type="submit" data-ng-disabled="callForm.$invalid") Book Now
+material-content.footer
+    include ../shared/footer

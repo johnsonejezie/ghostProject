@@ -1,0 +1,19 @@
+header
+  h1
+    a(href="/" target="_self")
+      | Sidetime
+  nav.padded
+  auth.padded
+    .sign-in(ng-hide="currentUser")
+      material-button.material-theme-green(ng-click="login('google')")
+        span login
+    .dropdown(ng-show="currentUser" ng-cloak)
+      a(href="#").dropdown-toggle
+        img.avatar(ng-src="{{currentUser.picture}}")
+      ul.dropdown-menu.dropdown-menu-right(role="menu")
+        li.dropdown-header(role="presentation")
+          | Signed in as {{ currentUser.email }}
+        li
+          a(href="/settings") Account Settings
+        li
+          a(ng-click="logout()") Sign out

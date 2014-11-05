@@ -1,0 +1,75 @@
+.row.col-md-6(data-ng-init="populateSuggestions()")
+  form(name="detailsForm" data-ng-submit="saveDetails()" autocomplete="off")
+    fieldset
+      legend Personal Details 
+      .alert.alert-success(role="alert" data-ng-show="success")
+        strong Details have been successfull changed
+      .alert.alert-danger(role="alert" data-ng-show="error")
+        strong Your details were not updated
+
+      .form-group(data-ng-class="{'has-error': detailsForm.name.$invalid && !detailsForm.name.$pristine }")
+        label.label-profile(for="name") Full Name
+        input.input-profile.form-control(type="text" id="name" name="name" minlength="4" data-ng-model="currentUser.name" placeholder="Enter your full name" required)
+        p.help-block(data-ng-show="detailsForm.name.$error.required && !detailsForm.name.pristine") Required
+        p.help-block(data-ng-show="detailsForm.name.$error.minlength && !detailsForm.name.pristine") Full name should be at least 4 characters long
+
+      .form-group(data-ng-class="{'has-error': detailsForm.email.$invalid && !detailsForm.email.$pristine }")
+        label.label-profile(for="email") Email
+        input.input-profile.form-control(type="email" id="email" name="email" data-ng-pattern="email_regexp" data-ng-model="currentUser.email" placeholder="Email" required)
+        p.help-block(data-ng-show="detailsForm.email.$invalid && !detailsForm.email.$pristine") Enter a valid email
+
+      .form-group(data-ng-class="{'has-error': detailsForm.username.$invalid && !detailsForm.username.$pristine }")
+        label.label-profile(for="username") Username
+        input.input-profile.form-control(type="text" id="username" ensure-unique name="username" minlength="4" data-ng-model="currentUser.username" placeholder="Username" required) 
+        p.help-block(data-ng-show="(detailsForm.username.$error.minlength || detailsForm.username.$error.required) && !detailsForm.username.$pristine") Username must be at least four characters
+        p.help-block(data-ng-show="detailsForm.username.$error.unique && !detailsForm.username.pristine") Username already exists
+
+      .text-center.form-group
+        button.btn.btn-large.btn-primary(type="submit" data-ng-disabled="detailsForm.$invalid") Save Details
+  form(name="expertForm" data-ng-submit="saveProfile()" autocomplete="off")  
+    fieldset  
+      legend.control-label Expert profile
+      .alert.alert-success(role="alert" data-ng-show="successProfile")
+        strong Your Profile has been saved
+      .alert.alert-danger(role="alert" data-ng-show="errorProfile")
+        strong Profile update not saved
+
+      .form-group(data-ng-class="{'has-error': expertForm.headline.$invalid && !expertForm.headline.$pristine }")
+        label.label-profile(for="headline") Headline
+        input.input-profile.form-control(type="text" id="headline" name="headline" data-ng-model="currentUser.expert_profile.headline" placeholder="headline" required)
+        p.help-block(data-ng-show="expertForm.headline.$invalid && !expertForm.headline.$pristine") Headline cannot be left blank
+      .row
+        .col-md-6.form-group(data-ng-class="{'has-error': expertForm.rate.$invalid && !expertForm.rate.$pristine }")
+          label.label-profile(for="rate") Rate ($USD)
+          input.input-profile.form-control(type="number" min="25" id="rate" name="rate" validate-rate data-ng-model="currentUser.expert_profile.rate" placeholder="rate" required)
+          small.help-block(data-ng-show="expertForm.rate.$error.valid && !expertForm.rate.$pristine") Rate should be a number and in increments of $5.00. The minimum amount that can be charged is $25.00 
+
+        .col-md-6.form-group(data-ng-class="{'has-error': expertForm.minutes.$invalid && !expertForm.minutes.$pristine }")
+          label.label-profile(for="minutes") @Minutes
+          input.input-profile.form-control(type="number" min="15" id="minutes" name="minutes" validate-minutes data-ng-model="currentUser.expert_profile.minutes" placeholder="minutes" required)
+          small.help-block(data-ng-show="expertForm.minutes.$invalid && !expertForm.minutes.$pristine") Minutes should be a number and the minimum minute rate is 15 minutes
+
+      .row  
+        .col-md-9.form-group(data-ng-class="{'has-error': expertForm.expertiseAreas.$invalid && !expertForm.expertiseAreas.$pristine }")
+          label.label-profile(for="expertiseAreas") Areas of expertise {{expertise}}
+          input.input-profile.form-control(id="expertiseAreas" data-ng-keyup="autoSuggest(expertise)" name="expertiseAreas" data-ng-model="expertise" placeholder="areas of expertise")
+          p.help-block(data-ng-show="tagError") You cannot have a duplicate expertise
+          ul(style="width: 30%; border: 1px solid green;"  data-ng-mouseleave="toggle(false)" data-ng-show="show && filteredItems.length")
+            li(data-ng-repeat="item in filteredItems = (expertiseAreas | filter: expertise)")
+              a(data-ng-click="addTags(item)") {{item}}
+          div
+            button.btn.btn-success.btn-sm(type="button" data-ng-repeat="tag in expertTags track by $index") {{tag}}
+              a.close(data-ng-click="deleteTag($index)") ×
+        .col-md-3 
+          button.add-button.btn.btn-primary(type="button" data-ng-click="addTags(expertise)") Add
+
+      .form-group(data-ng-class="{'has-error': expertForm.brief_bio.$error.minlength && !expertForm.brief_bio.$pristine }")
+        label.label-profile(for="brief_bio") Bio Summary
+        textarea.input-profile.form-control(id="brief_bio" name="brief_bio" data-ng-model="currentUser.expert_profile.brief_bio" minlength="100" cols="30" rows="10" placeholder="brief bio" required)
+        p.help-block(data-ng-show="expertForm.brief_bio.$error.minlength && !expertForm.brief_bio.$pristine") Bio should be at least 100 characters long
+
+      .text-center.form-group
+          button.btn.btn-large.btn-primary(type="submit" data-ng-disabled="expertForm.$invalid") Save Profile
+div(style="clear:both; padding-bottom: 50px;")
+
+  

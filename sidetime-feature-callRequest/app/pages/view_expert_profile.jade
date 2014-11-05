@@ -1,0 +1,34 @@
+.container
+  header.userProfile    
+    include ../shared/signedin_header 
+  .container(data-ng-controller="BrowseExperts" data-ng-init="getExpert()")
+    .row
+      .col-md-offset-2.col-md-8.col-lg-offset-3.col-lg-6
+        .well.profile
+          .col-sm-12
+            .col-xs-12.col-sm-8
+              h2(style="text-transform: capitalize;") {{expert.name}} 
+              p(style="text-transform: uppercase;")
+                strong {{expert.expert_profile.headline}}
+              p.text-left 
+                span {{expert.expert_profile.brief_bio}} 
+              p 
+                strong Expertise: 
+                div(data-ng-repeat="category in expert.expert_profile.categories") 
+                  span.tags(data-ng-repeat="tag in category.tags") {{tag}}     
+            .col-xs-12.col-sm-4.text-center
+              figure
+                  img.img-circle.img-responsive(ng-src="{{expert.picture}}")        
+          .col-xs-12.divider.text-center
+            .col-xs-12.center-block
+              h2 
+                strong ${{expert.expert_profile.rate}}                    
+              p 
+                small per minute
+
+              button.btn.btn-success.btn-block
+                span.fa.fa-plus-circle Request a call
+              p
+                strong Rating: {{expert.expert_profile.rating}}
+  material-content.footer
+    include ../shared/footer
